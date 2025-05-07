@@ -93,8 +93,8 @@ func Ichimoku(highs, lows, closes []float64) IchimokuResult {
 		}
 
 		// Chikou Span (close shifted backward 26 periods)
-		if i+26 < n {
-			chikouSpan[i] = closes[i+26]
+		if i >= 26 {
+			chikouSpan[i-26] = closes[i]
 		}
 	}
 
