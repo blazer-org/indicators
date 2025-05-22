@@ -1,2 +1,14 @@
 github.com/blazer-org/cgo-talib v0.0.0-20240427163737-93fa644e0325 h1:+KBdRhelP816KQEf29Rez2/G9sNgEW7H7RhjfmLxooQ=
 github.com/blazer-org/cgo-talib v0.0.0-20240427163737-93fa644e0325/go.mod h1:UyZAe6E1MWen5wS2Dz3EM8kV2eZBdLNIaVxICu9l6so=
+github.com/blazer-org/go-talib v0.0.0-20190307022042-cd53a9264d70 h1:MwyGjaYJdghICzjGX8s0uZvXLphuMYrGIEngMpWOahU=
+github.com/blazer-org/go-talib v0.0.0-20190307022042-cd53a9264d70/go.mod h1:aP16iF7y5IYaqCzRkL5FEAbzCvOn+vEb/K5WXCu+Vi4=
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
+github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
+github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
+gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
+gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

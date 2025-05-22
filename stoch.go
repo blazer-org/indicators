@@ -1,7 +1,8 @@
 package indicators
 
 import (
-	"math"
+	cgotalib "github.com/blazer-org/cgo-talib"
+	// "math" // math import will be removed as NaN handling is no longer manual
 )
 
 // StochasticResult holds the %K and %D series
@@ -10,52 +11,44 @@ type StochasticResult struct {
 	StochKSignal []float64
 }
 
-// StochasticOscillator calculates the %K and %D series
-func StochasticOscillator(high, low, close []float64, window, smoothWindow int, fillNa bool) StochasticResult {
+// StochasticOscillator calculates the %K and %D series using cgo-talib's Stochf.
+// fastDMAType is set to 0 (SMA) for the FastD calculation.
+// The fillNa parameter and its logic have been removed; cgo-talib's output (0s for initial unstable periods) is used directly.
+func StochasticOscillator(high, low, close []float64, window, smoothWindow int) StochasticResult {
 	n := len(close)
-	stochK := make([]float64, n)
+	emptyResult := StochasticResult{StochK: []float64{}, StochKSignal: []float64{}}
 
-	for i := 0; i < n; i++ {
-		if i+1 < window {
-			stochK[i] = math.NaN()
-			continue
-		}
-		lowMin := math.MaxFloat64
-		highMax := -math.MaxFloat64
-		for j := i + 1 - window; j <= i; j++ {
-			if low[j] < lowMin {
-				lowMin = low[j]
-			}
-			if high[j] > highMax {
-				highMax = high[j]
-			}
-		}
-		denom := highMax - lowMin
-		if denom == 0 {
-			stochK[i] = 0
-		} else {
-			stochK[i] = 100 * (close[i] - lowMin) / denom
-		}
+	// Check for empty or mismatched length input slices
+	if n == 0 || len(high) != n || len(low) != n {
+		return emptyResult
 	}
 
-	stochKSignal := SMA(stochK, smoothWindow)
-
-	// Optional: fill NaN values
-	if fillNa {
-		for i := range stochK {
-			if math.IsNaN(stochK[i]) {
-				stochK[i] = 50
-			}
-		}
-		for i := range stochKSignal {
-			if math.IsNaN(stochKSignal[i]) {
-				stochKSignal[i] = 50
-			}
-		}
+	// Validate period parameters for TA-Lib.
+	// For StochF, fastK_Period (window) and fastD_Period (smoothWindow) must be >= 1.
+	// Source: TA-Lib C API documentation for TA_STOCHF.
+	if window < 1 || smoothWindow < 1 {
+		return emptyResult
 	}
+
+	// Determine minimum length required for TA_STOCHF based on its lookback.
+	// TA_STOCHF_Lookback = (fastK_Period - 1) + (fastD_Period - 1).
+	// Minimum number of elements needed for any output is lookback + 1.
+	// So, n >= (window - 1) + (smoothWindow - 1) + 1  => n >= window + smoothWindow - 1.
+	requiredLength := (window - 1) + (smoothWindow - 1) + 1
+	if n < requiredLength {
+		return emptyResult
+	}
+
+	fastKPeriod := int32(window)
+	fastDPeriod := int32(smoothWindow)
+	// Use int32(0) for SMA, as TA-Lib's MA_Type enum typically starts with SMA = 0.
+	fastDMAType := int32(0) 
+
+	// Call TA-Lib's Stochastic Fast function (Stochf with lowercase 'f')
+	outFastK, outFastD := cgotalib.Stochf(high, low, close, fastKPeriod, fastDPeriod, fastDMAType)
 
 	return StochasticResult{
-		StochK:       stochK,
-		StochKSignal: stochKSignal,
+		StochK:       outFastK,
+		StochKSignal: outFastD,
 	}
 }

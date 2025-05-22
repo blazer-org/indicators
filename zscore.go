@@ -3,7 +3,7 @@ package indicators
 // CalculateZScore calculates the Z-Score for a given time series.
 func ZScore(data []float64, window int) []float64 {
 	std := RollingStd(data, window)
-	sma := SMA(data, window)
+	sma := SMA(data, int32(window))
 
 	zScore := make([]float64, len(data))
 
